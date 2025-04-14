@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problema 1</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+        }
+
+        .lista {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        body{
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class = "lista">
+            <h3>French designers:</h3>
+            <select id="firstList" multiple size="10">
+                <option value="Christian Dior">Christian Dior</option>
+                <option value="Coco Chanel">Coco Chanel</option>
+                <option value="Jean Paul Gaultier">Jean Paul Gaultier</option>
+                <option value="Pierre Balmain">Pierre Balmain</option>
+                <option value="Hubert de Givenchy">Hubert de Givenchy</option>
+                <option value="Yves Saint Laurent">Yves Saint Laurent</option>
+                <option value="Jeanne Lanvin">Jeanne Lanvin</option>
+            </select>
+        </div>
+
+        <div class = "lista">
+            <h3>Italian designers:</h3>
+            <select id="secondList" multiple size="10">
+                <option value="Giorgio Armani">Giorgio Armani</option>
+                <option value="Salvatore Ferragamo">Salvatore Ferragamo</option>
+                <option value="Guccio Gucci">Guccio Gucci</option>
+                <option value="Franco Moschino">Franco Moschino</option>
+                <option value="Gianni Versace">Gianni Versace</option>
+                <option value="Donatella Versace">Donatella Versace</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        var firstList = document.getElementById("firstList");
+        var secondList = document.getElementById("secondList");
+
+        firstList.addEventListener("dblclick", function () {
+            var selectedDesigner = firstList.options[firstList.selectedIndex];
+            secondList.appendChild(selectedDesigner);
+            firstList.removeChild(selectedDesigner);
+        });
+
+        secondList.addEventListener("dblclick", function () {
+            var selectedDesigner = secondList.options[secondList.selectedIndex];
+            firstList.appendChild(selectedDesigner);
+            secondList.removeChild(selectedDesigner);
+        });
+    </script>
+
+</body>
+</html>
