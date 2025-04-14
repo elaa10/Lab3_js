@@ -1,33 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Problema 2</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 40px;
+            background-color: lavender;
+        }
 
+        form {
+            max-width: 320px;
+            margin: auto;
+        }
 
+        .form-control {
+            margin-bottom: 20px;
+        }
+
+        .form-control label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-control input {
+            padding: 8px;
+            width: 100%;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: mediumpurple;
+        }
+    </style>
 </head>
 <body>
-    <form>
-      <div class="form-control">
-        <label>Name</label><input class="text" required />
-      </div>
+<form>
+    <div class="form-control">
+        <label>Nume complet</label><input class="text" required />
+    </div>
 
-      <div class="form-control">
-        <label>Birth date (mm/dd/yyyy)</label><input class="text" required />
-      </div>
+    <div class="form-control">
+        <label>Data nasterii</label><input class="text" id="birth" type="date" required />
+    </div>
 
-      <div class="form-control">
-        <label>Age</label><input class="text" required />
-      </div>
+    <div class="form-control">
+        <label>Varsta</label><input class="text" id="age" readonly />
+    </div>
 
-      <div class="form-control">
-        <label>E-mail</label><input class="text" required />
-      </div>
+    <div class="form-control">
+        <label>Email</label><input class="text" type="email" required />
+    </div>
 
-      <button id="btn" class="btn" type="button">Send</button>
-    </form>
+    <button id="btn" class="btn" type="button">Trimite</button>
+</form>
 
-    <script src="Problema2.js"></script>
+<script src="Problema2.js"></script>
 </body>
 </html>
