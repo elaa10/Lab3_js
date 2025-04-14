@@ -15,6 +15,9 @@
             cursor: pointer;
             text-align: center;
         }
+        th {
+            background-color: #f0f0f0;
+        }
         th.sorted-asc::after {
             content: " ▲";
         }
@@ -36,6 +39,7 @@
     <tbody>
     <tr><td>Mere</td><td>3</td><td>8</td></tr>
     <tr><td>Pere</td><td>4</td><td>6</td></tr>
+    <tr><td>Smochine</td><td>4</td><td>12</td></tr>
     <tr><td>Banane</td><td>2</td><td>12</td></tr>
     </tbody>
 </table>
@@ -44,26 +48,21 @@
     function makeTableSortable(table) {
         const headers = table.querySelectorAll("thead th");
         const tbody = table.querySelector("tbody");
-        let sortState = {}; // key = colIndex, value = 'asc' | 'desc'
+        let sortState = {};
 
         headers.forEach((th, colIndex) => {
             th.addEventListener("click", () => {
-                // Determină noua direcție
                 let direction = 'asc';
                 if (sortState[colIndex] === 'asc') direction = 'desc';
                 else if (sortState[colIndex] === 'desc') direction = 'asc';
 
-                // Elimină clasele vizuale de sortare de pe toate coloanele
                 headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
 
-                // Adaugă clasa pe coloana curentă
                 th.classList.add(direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
 
-                // Actualizează starea sortării
-                sortState = {}; // resetăm alte coloane
+                sortState = {};
                 sortState[colIndex] = direction;
 
-                // Sortăm rândurile
                 let rows = Array.from(tbody.rows);
                 rows.sort((a, b) => {
                     let valA = a.cells[colIndex].innerText;

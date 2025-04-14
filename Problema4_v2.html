@@ -1,87 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Problema 4 - vertical</title>
-  <style>
-    table {
-      border-collapse: collapse;
-      margin: 20px;
-    }
-    td {
-      border: 1px solid black;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-    }
-    td.header {
-      font-weight: bold;
-      background-color: #f0f0f0;
-    }
-    td.sorted-asc::after {
-      content: " ▲";
-    }
-    td.sorted-desc::after {
-      content: " ▼";
-    }
-  </style>
-</head>
-<body>
-
-<table id="tabel-vertical">
-  <tbody>
-  <tr><td class="header">Fruct</td><td>Mere</td><td>Pere</td><td>Banane</td></tr>
-  <tr><td class="header">Pret</td><td>3</td><td>4</td><td>2</td></tr>
-  <tr><td class="header">Cantitate</td><td>8</td><td>6</td><td>12</td></tr>
-  </tbody>
-</table>
-
-<script>
-  const table = document.getElementById("tabel-vertical");
-  const tbody = table.querySelector("tbody");
-  let sortState = {};
-
-  for (let rowIndex = 0; rowIndex < tbody.rows.length; rowIndex++) {
-    const row = tbody.rows[rowIndex];
-    const headerCell = row.cells[0];
-
-    headerCell.addEventListener("click", () => {
-      let direction = sortState[rowIndex] === "asc" ? "desc" : "asc";
-      sortState = {}; // Resetăm celelalte sortări
-      sortState[rowIndex] = direction;
-
-      // Eliminăm săgețile din toate anteturile
-      for (let i = 0; i < tbody.rows.length; i++) {
-        tbody.rows[i].cells[0].classList.remove("sorted-asc", "sorted-desc");
-      }
-      headerCell.classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
-
-      let numCols = row.cells.length - 1;
-      let indices = Array.from({ length: numCols }, (_, i) => i + 1);
-
-      indices.sort((a, b) => {
-        let valA = tbody.rows[rowIndex].cells[a].innerText;
-        let valB = tbody.rows[rowIndex].cells[b].innerText;
-
-        valA = isNaN(valA) ? valA.toLowerCase() : Number(valA);
-        valB = isNaN(valB) ? valB.toLowerCase() : Number(valB);
-
-        return direction === "asc"
-                ? valA > valB ? 1 : -1
-                : valA < valB ? 1 : -1;
-      });
-
-      // Reordonăm fiecare rând în funcție de noua ordine
-      for (let i = 0; i < numCols; i++) {
-        for (let r = 0; r < tbody.rows.length; r++) {
-          let currentRow = tbody.rows[r];
-          currentRow.appendChild(currentRow.cells[indices[i]]);
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problema 4 - vertical</title>
+    <style>
+        table {
+          border-collapse: collapse;
+          margin: 20px;
         }
-      }
-    });
-  }
-</script>
+        td {
+          border: 1px solid black;
+          padding: 10px;
+          text-align: center;
+          cursor: pointer;
+        }
+        td.header {
+          font-weight: bold;
+          background-color: #f0f0f0;
+        }
+        td.sorted-asc::after {
+          content: " ▲";
+        }
+        td.sorted-desc::after {
+          content: " ▼";
+        }
+    </style>
+</head>
+
+<body>
+  <table id="tabel-vertical">
+      <tbody>
+        <tr><td class="header">Fruct</td><td>Mere</td><td>Pere</td><td>Banane</td><td>Smochine</td></tr>
+        <tr><td class="header">Pret</td><td>3</td><td>4</td><td>2</td><td>4</td></tr>
+        <tr><td class="header">Cantitate</td><td>8</td><td>6</td><td>12</td><td>13</td></tr>
+      </tbody>
+  </table>
+
+  <script>
+    const table = document.getElementById("tabel-vertical");
+    const tbody = table.querySelector("tbody");
+    let sortState = {};
+
+    for (let rowIndex = 0; rowIndex < tbody.rows.length; rowIndex++) {
+      const headerCell = tbody.rows[rowIndex].cells[0];
+
+      (function attachClick(cell, rowIndex) {
+        cell.addEventListener("click", () => {
+          let direction = sortState[rowIndex] === "asc" ? "desc" : "asc";
+          sortState = {};
+          sortState[rowIndex] = direction;
+
+          for (let i = 0; i < tbody.rows.length; i++) {
+            tbody.rows[i].cells[0].classList.remove("sorted-asc", "sorted-desc");
+          }
+          cell.classList.add(direction === "asc" ? "sorted-asc" : "sorted-desc");
+
+          let numCols = tbody.rows[0].cells.length - 1;
+          let indices = Array.from({ length: numCols }, (_, i) => i + 1);
+
+
+          indices.sort((a, b) => {
+            let valA = tbody.rows[rowIndex].cells[a].innerText;
+            let valB = tbody.rows[rowIndex].cells[b].innerText;
+            valA = isNaN(valA) ? valA.toLowerCase() : Number(valA);
+            valB = isNaN(valB) ? valB.toLowerCase() : Number(valB);
+            return direction === "asc"
+              ? valA > valB ? 1 : -1
+              : valA < valB ? 1 : -1;
+          });
+
+
+          for (let r = 0; r < tbody.rows.length; r++) {
+            const row = tbody.rows[r];
+            const originalHeader = row.cells[0];
+            const newCells = [originalHeader];
+            for (let i = 0; i < indices.length; i++) {
+              newCells.push(row.cells[indices[i]]);
+            }
+
+
+            while (row.firstChild) row.removeChild(row.firstChild);
+            newCells.forEach(cell => row.appendChild(cell));
+          }
+        });
+      })(headerCell, rowIndex);
+    }
+  </script>
 
 </body>
 </html>

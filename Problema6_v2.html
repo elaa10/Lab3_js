@@ -1,135 +1,132 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <title>Puzzle 4x4 cu Imagine</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin: 20px;
-    }
-
-    #puzzle {
-      display: grid;
-      grid-template-columns: repeat(4, 100px);
-      grid-template-rows: repeat(4, 100px);
-      gap: 2px;
-      width: 404px;
-      margin: 20px auto;
-    }
-
-    .tile {
-      width: 100px;
-      height: 100px;
-      background-image: url("image.jpeg");
-      background-size: 400px 400px;
-      box-sizing: border-box;
-      border: 1px solid #aaa;
-    }
-
-    .empty {
-      background: #eee;
-    }
-
-    #original-image {
-      margin-top: 30px;
-    }
-
-    #original-image img {
-      width: 200px;
-      height: 200px;
-      border: 2px solid #999;
-    }
-  </style>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Problema 6 - imagine</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin: 20px;
+      }
+      #puzzle {
+        display: grid;
+        grid-template-columns: repeat(4, 100px);
+        grid-template-rows: repeat(4, 100px);
+        gap: 2px;
+        width: 404px;
+        margin: 20px auto;
+      }
+      .tile {
+        width: 100px;
+        height: 100px;
+        background-image: url("image.jpeg");
+        background-size: 400px 400px;
+        box-sizing: border-box;
+        border: 1px solid #aaa;
+      }
+      .empty {
+        background: #eee;
+      }
+      #original-image {
+        margin-top: 30px;
+      }
+      #original-image img {
+        width: 200px;
+        height: 200px;
+        border: 2px solid #999;
+      }
+    </style>
 </head>
+
 <body>
-<h2>Puzzle 4x4 cu Imagine</h2>
-<div id="puzzle"></div>
+    <h1>Geronimo Stilton</h1>
+    <div id="puzzle"></div>
 
-<div id="original-image">
-  <img src="image.jpeg" alt="Imagine originală">
-</div>
+    <div id="original-image">
+      <img src="image.jpeg" alt="Imagine originală">
+    </div>
 
-<script>
-  const n = 4;
-  const puzzle = document.getElementById("puzzle");
-  let tiles = [];
-  let empty = { row: n - 1, col: n - 1 };
+    <script>
+        const n = 4;
+        const puzzle = document.getElementById("puzzle");
+        let tiles = [];
+        let empty = { row: n - 1, col: n - 1 };
 
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
-  function initPuzzle() {
-    const positions = [];
-    for (let i = 0; i < n * n; i++) {
-      positions.push(i);
-    }
-
-    shuffleArray(positions);
-
-    puzzle.innerHTML = "";
-    tiles = [];
-
-    for (let i = 0; i < n; i++) {
-      const row = [];
-      for (let j = 0; j < n; j++) {
-        const index = positions[i * n + j];
-        const div = document.createElement("div");
-        div.classList.add("tile");
-
-        if (index === n * n - 1) {
-          div.classList.add("empty");
-          empty = { row: i, col: j };
-        } else {
-          const x = (index % n) * -100;
-          const y = Math.floor(index / n) * -100;
-          div.style.backgroundPosition = `${x}px ${y}px`;
+        function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
         }
 
-        puzzle.appendChild(div);
-        row.push(div);
-      }
-      tiles.push(row);
-    }
-  }
+        function initPuzzle() {
+          const positions = [];
+          for (let i = 0; i < n * n; i++) {
+            positions.push(i);
+          }
 
-  function swapTiles(r1, c1, r2, c2) {
-    const tile1 = tiles[r1][c1];
-    const tile2 = tiles[r2][c2];
+          shuffleArray(positions);
 
-    const tempStyle = tile1.style.backgroundPosition;
-    tile1.style.backgroundPosition = tile2.style.backgroundPosition;
-    tile2.style.backgroundPosition = tempStyle;
+          puzzle.innerHTML = "";
+          tiles = [];
 
-    tile1.classList.toggle("empty");
-    tile2.classList.toggle("empty");
-  }
+          for (let i = 0; i < n; i++) {
+            const row = [];
+            for (let j = 0; j < n; j++) {
+              const index = positions[i * n + j];
+              const div = document.createElement("div");
+              div.classList.add("tile");
 
-  document.addEventListener("keydown", (e) => {
-    let newRow = empty.row;
-    let newCol = empty.col;
+              if (index === n * n - 1) {
+                div.classList.add("empty");
+                empty = { row: i, col: j };
+              } else {
+                const x = (index % n) * -100;
+                const y = Math.floor(index / n) * -100;
+                div.style.backgroundPosition = `${x}px ${y}px`;
+              }
 
-    switch (e.key) {
-      case "ArrowUp": newRow++; break;
-      case "ArrowDown": newRow--; break;
-      case "ArrowLeft": newCol++; break;
-      case "ArrowRight": newCol--; break;
-      default: return;
-    }
+              puzzle.appendChild(div);
+              row.push(div);
+            }
+            tiles.push(row);
+          }
+        }
 
-    if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n) {
-      swapTiles(empty.row, empty.col, newRow, newCol);
-      empty.row = newRow;
-      empty.col = newCol;
-    }
-  });
+        function swapTiles(r1, c1, r2, c2) {
+          const tile1 = tiles[r1][c1];
+          const tile2 = tiles[r2][c2];
 
-  initPuzzle();
-</script>
+          const tempStyle = tile1.style.backgroundPosition;
+          tile1.style.backgroundPosition = tile2.style.backgroundPosition;
+          tile2.style.backgroundPosition = tempStyle;
+
+          tile1.classList.toggle("empty");
+          tile2.classList.toggle("empty");
+        }
+
+        document.addEventListener("keydown", (e) => {
+          let newRow = empty.row;
+          let newCol = empty.col;
+
+          switch (e.key) {
+            case "ArrowUp": newRow++; break;
+            case "ArrowDown": newRow--; break;
+            case "ArrowLeft": newCol++; break;
+            case "ArrowRight": newCol--; break;
+            default: return;
+          }
+
+          if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n) {
+            swapTiles(empty.row, empty.col, newRow, newCol);
+            empty.row = newRow;
+            empty.col = newCol;
+          }
+        });
+
+        initPuzzle();
+    </script>
 </body>
 </html>

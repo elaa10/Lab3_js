@@ -14,9 +14,7 @@ function birthValidation(birth) {
 }
 
 function ageValidation(age) {
-    if (age === '') return false;
-    const regex = /^[0-9]+$/;
-    return regex.test(age);
+    return age <= 120;
 }
 
 function emailValidation(email) {
@@ -38,7 +36,6 @@ function calculateAge(dateString) {
     return age;
 }
 
-// Auto-completare varsta din data nasterii
 birthInput.addEventListener('change', () => {
     const val = birthInput.value;
     if (birthValidation(val)) {
@@ -50,7 +47,7 @@ birthInput.addEventListener('change', () => {
 });
 
 btn.addEventListener('click', () => {
-    const inputs = document.querySelectorAll('.form-control input');
+    const inputs = document.querySelectorAll('.camp-inserare input');
     const myName = inputs[0].value;
     const birthdate = inputs[1].value;
     const age = inputs[2].value;

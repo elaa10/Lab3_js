@@ -10,29 +10,24 @@
             padding: 40px;
             background-color: lavender;
         }
-
         form {
             max-width: 320px;
             margin: auto;
         }
-
-        .form-control {
+        .camp-inserare {
             margin-bottom: 20px;
         }
-
-        .form-control label {
+        .camp-inserare label {
             display: block;
             margin-bottom: 6px;
             font-weight: bold;
         }
-
-        .form-control input {
+        .camp-inserare input {
             padding: 8px;
             width: 100%;
             font-size: 16px;
             box-sizing: border-box;
         }
-
         .btn {
             padding: 10px 20px;
             font-size: 16px;
@@ -42,26 +37,26 @@
     </style>
 </head>
 <body>
-<form>
-    <div class="form-control">
-        <label>Nume complet</label><input class="text" required />
-    </div>
+    <form>
+        <div class="camp-inserare">
+            <label>Nume complet</label><input class="text" required />
+        </div>
 
-    <div class="form-control">
-        <label>Data nasterii</label><input class="text" id="birth" type="date" required />
-    </div>
+        <div class="camp-inserare">
+            <label>Data nasterii</label><input class="text" id="birth" type="date" required />
+        </div>
 
-    <div class="form-control">
-        <label>Varsta</label><input class="text" id="age" readonly />
-    </div>
+        <div class="camp-inserare">
+            <label>Varsta</label><input class="text" id="age" readonly />
+        </div>
 
-    <div class="form-control">
-        <label>Email</label><input class="text" type="email" required />
-    </div>
+        <div class="camp-inserare">
+            <label>Email</label><input class="text" type="email" required />
+        </div>
 
-    <button id="btn" class="btn" type="button">Trimite</button>
-</form>
+        <button id="btn" class="btn" type="button">Trimite</button>
+    </form>
 
-<script src="Problema2.js"></script>
+    <script src="Problema2.js"></script>
 </body>
 </html>
