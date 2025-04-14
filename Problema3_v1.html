@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problem 3 - numere</title>
+    <style>
+        table {
+          margin: 0 auto;
+          border-collapse: collapse;
+        }
+        td {
+          width: 120px;
+          height: 120px;
+          border: 2px solid white;
+          text-align: center;
+          font-size: 40px;
+          background-color: #a293b4;
+          cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="memory_game">
+      <!-- Se genereazăaautomat -->
+    </table>
+
+    <script>
+        const matrix = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8];
+        matrix.sort(() => 0.5 - Math.random());
+
+        const table = document.getElementById("memory_game");
+        let first = null;
+        let second = null;
+        let found = 0;
+
+        function createBoard() {
+            for (let i = 0; i < 4; i++) {
+              const row = document.createElement("tr");
+              for (let j = 0; j < 4; j++) {
+                  const index = i * 4 + j;
+                  const td = document.createElement("td");
+                  td.dataset.index = index;
+                  td.addEventListener("click", select);
+                  row.appendChild(td);
+              }
+              table.appendChild(row);
+            }
+        }
+
+        function select() {
+            if (this.textContent || second) return;
+
+            const index = this.dataset.index;
+            this.textContent = matrix[index];
+
+            if (!first) {
+                first = this;
+                return;
+            }
+
+            second = this;
+
+            const val1 = matrix[first.dataset.index];
+            const val2 = matrix[second.dataset.index];
+
+            if (val1 === val2) {
+                first.removeEventListener("click", select);
+                second.removeEventListener("click", select);
+                first = null;
+                second = null;
+                found++;
+
+                if (found === 8) {
+                  alert("Ai câștigat!");
+                }
+            } else {
+                setTimeout(() => {
+                    first.textContent = "";
+                    second.textContent = "";
+                    first = null;
+                    second = null;
+                }, 1000);
+              }
+          }
+
+          createBoard();
+      </script>
+</body>
+</html>

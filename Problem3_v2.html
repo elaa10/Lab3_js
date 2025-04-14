@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problem 3 - imagini</title>
+    <style>
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        td {
+            width: 120px;
+            height: 120px;
+            border: 2px solid white;
+            text-align: center;
+            background-color: #a293b4;
+            cursor: pointer;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .revealed img {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <table id="memory_game">
+        <!-- Randurile se completeaza din JavaScript -->
+    </table>
+
+    <script>
+        const imagePaths = [
+            "images/image1.jpeg", "images/image1.jpeg",
+            "images/image2.jpeg", "images/image2.jpeg",
+            "images/image3.jpeg", "images/image3.jpeg",
+            "images/image4.jpeg", "images/image4.jpeg",
+            "images/image5.jpeg", "images/image5.jpeg",
+            "images/image6.jpeg", "images/image6.jpeg",
+            "images/image7.jpeg", "images/image7.jpeg",
+            "images/image8.jpeg", "images/image8.jpeg"
+        ];
+
+        imagePaths.sort(() => 0.5 - Math.random());
+
+        const table = document.getElementById("memory_game");
+        let first = null;
+        let second = null;
+        let found = 0;
+
+        function createBoard() {
+            for (let i = 0; i < 4; i++) {
+                const row = document.createElement("tr");
+                for (let j = 0; j < 4; j++) {
+                    const index = i * 4 + j;
+                    const td = document.createElement("td");
+                    td.dataset.index = index;
+
+                    const img = document.createElement("img");
+                    img.src = imagePaths[index];
+                    img.alt = "Memory image";
+
+                    td.appendChild(img);
+                    td.addEventListener("click", select);
+                    row.appendChild(td);
+                }
+                table.appendChild(row);
+            }
+        }
+
+        function select() {
+            if (this.classList.contains("revealed") || second) return;
+
+            this.classList.add("revealed");
+
+            if (!first) {
+                first = this;
+                return;
+            }
+
+            second = this;
+
+            const img1 = first.querySelector("img").src;
+            const img2 = second.querySelector("img").src;
+
+            if (img1 === img2) {
+                first.removeEventListener("click", select);
+                second.removeEventListener("click", select);
+                first = null;
+                second = null;
+                found++;
+
+                if (found === 8) {
+                    alert("Ai câștigat!");
+                }
+            } else {
+                setTimeout(() => {
+                    first.classList.remove("revealed");
+                    second.classList.remove("revealed");
+                    first = null;
+                    second = null;
+                }, 1000);
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
