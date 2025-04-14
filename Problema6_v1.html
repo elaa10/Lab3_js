@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Problema 6 - numere</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    td {
+      width: 60px;
+      height: 60px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #000;
+      font-size: 20px;
+      font-family: sans-serif;
+    }
+    .empty {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+<h2>Puzzle 15</h2>
+<table id="puzzle"></table>
+
+<script>
+  const n = 4;
+  const table = document.getElementById("puzzle");
+  let grid = [];
+  let empty = { row: 3, col: 3 };
+
+  // Generează o listă amestecată de numere de la 1 la n*n - 1 + spațiu gol
+  function shuffle() {
+    let numbers = Array.from({ length: n * n }, (_, i) => i);
+    for (let i = numbers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+    }
+    return numbers;
+  }
+
+  function createGrid() {
+    const shuffled = shuffle();
+    table.innerHTML = "";
+    grid = [];
+    let idx = 0;
+
+    for (let i = 0; i < n; i++) {
+      const row = [];
+      const tr = document.createElement("tr");
+      for (let j = 0; j < n; j++) {
+        const value = shuffled[idx++];
+        const td = document.createElement("td");
+        td.textContent = value === 0 ? "" : value;
+        if (value === 0) {
+          td.classList.add("empty");
+          empty = { row: i, col: j };
+        }
+        tr.appendChild(td);
+        row.push(td);
+      }
+      grid.push(row);
+      table.appendChild(tr);
+    }
+  }
+
+  function swapCells(r1, c1, r2, c2) {
+    const tmp = grid[r1][c1].textContent;
+    grid[r1][c1].textContent = grid[r2][c2].textContent;
+    grid[r2][c2].textContent = tmp;
+
+    grid[r1][c1].classList.toggle("empty");
+    grid[r2][c2].classList.toggle("empty");
+  }
+
+  document.addEventListener("keydown", (e) => {
+    let newRow = empty.row;
+    let newCol = empty.col;
+
+    switch (e.key) {
+      case "ArrowUp": newRow++; break;
+      case "ArrowDown": newRow--; break;
+      case "ArrowLeft": newCol++; break;
+      case "ArrowRight": newCol--; break;
+      default: return;
+    }
+
+    if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n) {
+      swapCells(empty.row, empty.col, newRow, newCol);
+      empty.row = newRow;
+      empty.col = newCol;
+    }
+  });
+
+  createGrid();
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problema 4 - orizontal</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px;
+        }
+        td, th {
+            border: 1px solid black;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+        th.sorted-asc::after {
+            content: " ▲";
+        }
+        th.sorted-desc::after {
+            content: " ▼";
+        }
+    </style>
+</head>
+<body>
+
+<table class="sortabil">
+    <thead>
+    <tr>
+        <th>Fruct</th>
+        <th>Pret</th>
+        <th>Cantitate</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>Mere</td><td>3</td><td>8</td></tr>
+    <tr><td>Pere</td><td>4</td><td>6</td></tr>
+    <tr><td>Banane</td><td>2</td><td>12</td></tr>
+    </tbody>
+</table>
+
+<script>
+    function makeTableSortable(table) {
+        const headers = table.querySelectorAll("thead th");
+        const tbody = table.querySelector("tbody");
+        let sortState = {}; // key = colIndex, value = 'asc' | 'desc'
+
+        headers.forEach((th, colIndex) => {
+            th.addEventListener("click", () => {
+                // Determină noua direcție
+                let direction = 'asc';
+                if (sortState[colIndex] === 'asc') direction = 'desc';
+                else if (sortState[colIndex] === 'desc') direction = 'asc';
+
+                // Elimină clasele vizuale de sortare de pe toate coloanele
+                headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+
+                // Adaugă clasa pe coloana curentă
+                th.classList.add(direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+                // Actualizează starea sortării
+                sortState = {}; // resetăm alte coloane
+                sortState[colIndex] = direction;
+
+                // Sortăm rândurile
+                let rows = Array.from(tbody.rows);
+                rows.sort((a, b) => {
+                    let valA = a.cells[colIndex].innerText;
+                    let valB = b.cells[colIndex].innerText;
+
+                    valA = isNaN(valA) ? valA.toLowerCase() : Number(valA);
+                    valB = isNaN(valB) ? valB.toLowerCase() : Number(valB);
+
+                    if (valA < valB) return direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+            });
+        });
+    }
+
+    document.querySelectorAll("table.sortabil").forEach(makeTableSortable);
+</script>
+
+</body>
+</html>
